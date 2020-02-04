@@ -9,6 +9,7 @@ public class NegativeSpaceInteraction : MonoBehaviour
     public float range;
     public LayerMask terrainDetection;
     public float phaseTime;
+    public float distanceIntoTerrain;
     RaycastHit surfaceFound;
     public PlayerController player;
 
@@ -102,7 +103,7 @@ public class NegativeSpaceInteraction : MonoBehaviour
         isPhasing = true;
 
         Vector3 originalPosition = player.transform.position;
-        Vector3 teleportLocation = surfaceFound.point + Quaternion.FromToRotation(Vector3.back, surfaceFound.normal) * Vector3.forward * 2;
+        Vector3 teleportLocation = surfaceFound.point + Quaternion.FromToRotation(Vector3.back, surfaceFound.normal) * Vector3.forward * distanceIntoTerrain;
 
         #region Invert mesh normals
         Mesh mesh = surfaceFound.collider.GetComponent<MeshFilter>().mesh;

@@ -1170,6 +1170,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   phaseTime: 0.5
+  distanceIntoTerrain: 2
   player: {fileID: 711782919}
   indicator: {fileID: 1322892126}
   canInvert: {r: 0, g: 1, b: 0, a: 1}
