@@ -18,7 +18,9 @@ public class NegativeSpaceInteraction : MonoBehaviour
     public Color canInvert;
     public Color cannotInvert;
     public Color defaultColour;
+    public ColourTransitionEffect phaseOverlay;
 
+    bool isPhasing;
     bool isInverted;
 
     //public Transform arrow;
@@ -39,9 +41,10 @@ public class NegativeSpaceInteraction : MonoBehaviour
             {
                 indicator.color = canInvert;
 
-                if (Input.GetButtonDown("Mouse Left"))
+                if (Input.GetButtonDown("Mouse Left") && isPhasing == false)
                 {
                     //InvertSpace(surfaceFound, c);
+                    phaseOverlay.Play();
                     StartCoroutine(InvertPhase(surfaceFound, c));
                 }
             }
@@ -62,6 +65,7 @@ public class NegativeSpaceInteraction : MonoBehaviour
         
     }
 
+    /*
     public void InvertSpace(RaycastHit surface, MeshCollider surfaceMesh)
     {
         Vector3 teleportLocation = surfaceFound.point + Quaternion.FromToRotation(Vector3.back, surfaceFound.normal) * Vector3.forward * 2;
@@ -91,26 +95,15 @@ public class NegativeSpaceInteraction : MonoBehaviour
         surfaceMesh.sharedMesh = mesh; // Updates mesh
         #endregion
     }
+    */
 
     public IEnumerator InvertPhase(RaycastHit surface, MeshCollider surfaceMesh)
     {
+        isPhasing = true;
+
         Vector3 originalPosition = player.transform.position;
         Vector3 teleportLocation = surfaceFound.point + Quaternion.FromToRotation(Vector3.back, surfaceFound.normal) * Vector3.forward * 2;
 
-        float elapsedTime = 0;
-
-        while (elapsedTime < phaseTime)
-        {
-            player.transform.position = Vector3.Lerp(originalPosition, teleportLocation, elapsedTime / phaseTime);
-            elapsedTime += Time.deltaTime;
-
-            // Yield here
-            yield return null;
-        }
-        // Make sure we got there
-        player.transform.position = teleportLocation;
-
-        
         #region Invert mesh normals
         Mesh mesh = surfaceFound.collider.GetComponent<MeshFilter>().mesh;
         Vector3[] normals = mesh.normals;
@@ -135,7 +128,23 @@ public class NegativeSpaceInteraction : MonoBehaviour
         surfaceMesh.sharedMesh = mesh; // Updates mesh
         #endregion
 
+        float elapsedTime = 0;
+
+        while (elapsedTime < phaseTime)
+        {
+            player.transform.position = Vector3.Lerp(originalPosition, teleportLocation, elapsedTime / phaseTime);
+            elapsedTime += Time.deltaTime;
+
+            // Yield here
+            yield return null;
+        }
+
+        // Make sure we got there
+        player.transform.position = teleportLocation;
+
         yield return null;
+
+        isPhasing = false;
 
         print("Completed");
 
