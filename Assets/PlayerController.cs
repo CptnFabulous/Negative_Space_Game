@@ -228,7 +228,7 @@ public class PlayerController : MonoBehaviour
             jumpTimer = 0;
         }
 
-        rb.AddForce(Physics.gravity * rb.mass);
+        //rb.AddForce(Physics.gravity * rb.mass);
     }
 
     private void LateUpdate()
