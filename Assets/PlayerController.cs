@@ -115,7 +115,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         #region Camera
-        print(canLook);
+        //print(canLook);
         //print(new Vector2(Input.GetAxis("Mouse X") * sensitivityModifier.NewFloat(sensitivityX) * Time.deltaTime, Input.GetAxis("Mouse Y") * sensitivityModifier.NewFloat(sensitivityY) * Time.deltaTime));
         if (canLook == true)
         {
